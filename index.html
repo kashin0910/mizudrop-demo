@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <title>まちの水滴 / Community Drops</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header class="app-header">
+    <div class="logo">
+      💧 まちの水滴
+    </div>
+    <button id="display-toggle" class="display-btn">
+      展示模式：关
+    </button>
+  </header>
+
+  <main id="main-content">
+    <!-- 首页：个人水滴总览 -->
+    <section id="section-overview" class="section">
+      <h1>欢迎回来，Kexin</h1>
+      <p class="subtitle">在这里，每一滴水滴都来自一次互相帮助。</p>
+
+      <div class="score-card">
+        <div>
+          <span class="label">我的水滴</span>
+          <div class="value"><span id="user-drops">12</span> 💧</div>
+        </div>
+        <div>
+          <span class="label">已完成互助</span>
+          <div class="value"><span id="user-tasks-count">3</span> 次</div>
+        </div>
+      </div>
+
+      <div class="chip-row">
+        <span class="chip chip-soft">Level 1：人际流动</span>
+        <span class="chip chip-soft">Level 2：社区流动</span>
+        <span class="chip chip-soft">Level 3：经营流动</span>
+      </div>
+    </section>
+
+    <!-- Level 1：任务与活动 -->
+    <section id="section-level1" class="section">
+      <h2>Level 1｜人际流动：创造联结</h2>
+      <p class="section-desc">
+        发布任务、参加活动、守看据点…  
+        每一个行动，都会变成一滴💧。
+      </p>
+
+      <h3 class="subheading">🔔 附近的任务</h3>
+      <div id="task-list" class="card-list">
+        <!-- JS 注入任务卡片 -->
+      </div>
+
+      <h3 class="subheading">🎉 社区活动（示例）</h3>
+      <div class="card-list">
+        <article class="card">
+          <div class="card-tag">活动参与 +2💧</div>
+          <h4>商店街盆舞大会</h4>
+          <p>只要来跳一曲，就能为街区带来一点活力。</p>
+          <p class="card-meta">时间：8/15 18:00</p>
+        </article>
+
+        <article class="card">
+          <div class="card-tag">活动参与 +2💧</div>
+          <h4>周末手作小市集</h4>
+          <p>带上一件自己做的小物，就能开一个小摊。</p>
+          <p class="card-meta">时间：每月第三个周六</p>
+        </article>
+      </div>
+    </section>
+
+    <!-- Level 2：水滴 → 权利 -->
+    <section id="section-level2" class="section">
+      <h2>Level 2｜社区流动：水滴变成权利</h2>
+      <p class="section-desc">
+        累积到的水滴，可以兑换让你走得更深、更久的「参与权」。
+      </p>
+
+      <div id="rights-list" class="card-list">
+        <!-- JS 注入可兑换权利 -->
+      </div>
+    </section>
+
+    <!-- Level 3：商店参与 -->
+    <section id="section-level3" class="section">
+      <h2>Level 3｜经营流动：商店 × 水滴</h2>
+      <p class="section-desc">
+        当店铺也用水滴来交换支持，商店街就不只是「卖东西」，  
+        而是和居民一起经营生活的伙伴。
+      </p>
+
+      <div id="shop-list" class="card-list">
+        <!-- JS 注入店铺卡片 -->
+      </div>
+    </section>
+  </main>
+
+  <!-- 展示模式的循环画面 -->
+  <div id="display-mode" class="display-mode hidden">
+    <div class="display-block">
+      <h2>💧 水滴排行榜</h2>
+      <ul id="ranking-list" class="ranking-list">
+        <!-- JS 注入排行榜 -->
+      </ul>
+    </div>
+
+    <div class="display-block">
+      <h2>📌 今日任务一览</h2>
+      <ul id="display-task-list" class="display-list">
+        <!-- JS 注入任务摘要 -->
+      </ul>
+    </div>
+
+    <div class="display-block">
+      <h2>🏪 商店故事</h2>
+      <ul id="display-shop-list" class="display-list">
+        <!-- JS 注入店铺摘要 -->
+      </ul>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
