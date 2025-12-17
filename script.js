@@ -1,127 +1,171 @@
-// ------------ 假数据 ------------
+// ==========================
+// データ（デモ用）
+// ==========================
 
-// 当前用户
+// ユーザー
 let userState = {
   name: "Kexin",
   drops: 12,
   completedTasks: 3,
 };
 
+// いま近くで起きていること（タスク/イベント）
 const tasks = [
   {
     id: 1,
-    title: "陪我去医院看诊",
-    desc: "希望有人一起陪同就诊，帮忙听医生说明。",
+    title: "親子えほんワークショップの協力",
+    desc: "Komagome の皆さん、こんにちは。えほん演者です。2月3日に淀む庭で親子えほんワークショップを行います。会場準備など、協力してくれる方を探しています。",
     reward: 4,
-    level: "高价值贡献",
+    meta: "2月3日｜＠淀む庭",
     done: false,
+    ctaPrimary: "協力する",
+    ctaSecondary: "詳細を見る",
   },
   {
     id: 2,
-    title: "帮忙搬重物回家",
-    desc: "从超市到家，步行约10分钟。",
+    title: "野菜の買い物を手伝ってほしい",
+    desc: "こんにちは、山田です（78歳）。少し重たい買い物があり、手伝ってくれる方を探しています。",
     reward: 3,
-    level: "据点贡献",
+    meta: "本日 16:00 まで",
     done: false,
+    ctaPrimary: "手伝う",
+    ctaSecondary: "メッセージを送る",
   },
   {
     id: 3,
-    title: "日语交流一小时",
-    desc: "和外国学生进行轻松日常对话练习。",
+    title: "中国文化シェア会",
+    desc: "Komagome の皆さん、こんにちは。Kexin です。1月6日に淀む庭で中国文化について気軽にお話しします。ぜひ遊びに来てください。",
     reward: 2,
-    level: "活动参与",
+    meta: "1月6日｜＠淀む庭",
     done: false,
+    ctaPrimary: "参加する",
+    ctaSecondary: "詳細を見る",
+  },
+  {
+    id: 4,
+    title: "ひだまりマルシェ",
+    desc: "ひだまりマルシェはハンドメイド作家による販売イベントです。ぜひお立ち寄りください。",
+    reward: 1,
+    meta: "12/13–14 10:00–16:00｜霜降り銀座商店街 金魚亭",
+    done: false,
+    ctaPrimary: "のぞいてみる",
+    ctaSecondary: "詳細を見る",
   },
 ];
 
-// 可兑换权利（Level 2）
+// 水滴はどこへ？（折りたたみ内の“広がり”）
 const rights = [
   {
     id: 1,
-    title: "大型市集摊位优先申请",
-    desc: "在年度商店街市集中，优先获得摊位。",
+    title: "イベントへの優先参加",
+    desc: "大きな市集（マルシェ）などで、優先的に申し込みできます。",
     cost: 20,
   },
   {
     id: 2,
-    title: "官方SNS宣传一次",
-    desc: "由商店街官方账号帮你转发活动或店铺介绍。",
+    title: "SNSでの紹介",
+    desc: "活動やお店の情報を、公式SNSで紹介します。",
     cost: 15,
   },
   {
     id: 3,
-    title: "据点故事上墙展示",
-    desc: "由社区志愿者采访并制作你的故事，长期在据点展示。",
+    title: "あなたのストーリー展示",
+    desc: "インタビューを通して、連庭の壁にあなたの物語を残します。",
     cost: 25,
   },
 ];
 
-// 商店（Level 3）
+// 商店（ユーザー向け表示）
 const shops = [
   {
     id: 1,
-    name: "昭和小杂货店",
+    name: "昭和の小さな雑貨店",
     drops: 38,
-    support: "获得设计学生协助更新招牌与店内导视。",
+    support: "店主の思い出話を、展示として残す準備中。",
   },
   {
     id: 2,
     name: "世界食堂 Komagome",
     drops: 26,
-    support: "用水滴换取英文＋中文菜单制作和SNS宣传。",
+    support: "多言語メニュー制作とSNS発信を準備中。",
   },
   {
     id: 3,
-    name: "亲子绘本屋 Yume",
+    name: "霜降り銀座商店街 金魚亭",
     drops: 18,
-    support: "在「故事上墙」中获得一整面亲子故事展示。",
+    support: "ひだまりマルシェの会場として参加中。",
   },
 ];
 
-// 排行榜（住民 + 商店的混合示例）
-const rankingEntries = [
-  { name: "Kexin", drops: 12, type: "住民" },
-  { name: "山田さん", drops: 19, type: "住民" },
-  { name: "昭和小杂货店", drops: 38, type: "店铺" },
-  { name: "世界食堂 Komagome", drops: 26, type: "店铺" },
-  { name: "Naomi", drops: 15, type: "住民" },
+// 展示ページ（公共視点）
+// いま流れている水滴（今日の例）
+const displayFlow = [
+  { label: "親子えほんワークショップの準備", plus: 4 },
+  { label: "山田さんの買い物サポート", plus: 3 },
+  { label: "中国文化シェア会の開催", plus: 2 },
+  { label: "ひだまりマルシェへの参加", plus: 1 },
 ];
 
-// ------------ DOM 渲染 ------------
+// 最近の痕跡
+const displayTraces = [
+  "Kexin が えほんワークショップを手伝いました",
+  "山田さんの買い物が、無事に終わりました",
+  "淀む庭で、新しい集まりが生まれました",
+  "はじめて参加した人が、3 人いました",
+];
+
+// 静かなランキング（最近の関わり）
+const displayRanking = [
+  { name: "Kexin", drops: 12, desc: "親子えほんワークショップの協力" },
+  { name: "山田さん", drops: 8, desc: "買い物サポート・マルシェ参加" },
+  { name: "Naomi", drops: 6, desc: "中国文化シェア会への参加" },
+  { name: "昭和の小さな雑貨店", drops: 10, desc: "商店街イベントへの協力" },
+  { name: "はじめての参加", drops: 3, desc: "初回の小さな手伝い" },
+];
+
+// 展示：商店の関わり
+const displayShopsSoft = [
+  "霜降り銀座商店街 金魚亭 — マルシェ会場として参加中",
+  "世界食堂 Komagome — 多言語メニュー準備中",
+  "昭和の小さな雑貨店 — 店主の思い出話を展示予定",
+];
+
+// ==========================
+// レンダリング（ユーザーページ）
+// ==========================
 
 function renderUserHeader() {
   document.getElementById("user-drops").textContent = userState.drops;
-  document.getElementById("user-tasks-count").textContent =
-    userState.completedTasks;
+  document.getElementById("user-tasks-count").textContent = userState.completedTasks;
 }
 
-// 任务列表
+// タスクカード
 function renderTasks() {
   const container = document.getElementById("task-list");
   container.innerHTML = "";
 
-  tasks.forEach((task) => {
+  tasks.forEach((t) => {
     const card = document.createElement("article");
     card.className = "card";
 
     card.innerHTML = `
-      <div class="card-tag">${task.level} +${task.reward}💧</div>
-      <h4>${task.title}</h4>
-      <p>${task.desc}</p>
+      <div class="card-tag">＋${t.reward}💧</div>
+      <h4>${t.title}</h4>
+      <p>${t.desc}</p>
+      <p class="card-meta">${t.meta}</p>
       <div class="card-bottom-row">
-        <span class="reward">奖励：+${task.reward} 💧</span>
-        <button class="btn btn-primary" ${
-          task.done ? "disabled" : ""
-        } data-task-id="${task.id}">
-          ${task.done ? "已完成" : "完成"}
-        </button>
+        <span class="reward">＋${t.reward} 💧</span>
+        <div style="display:flex; gap:.4rem;">
+          <button class="btn btn-primary" ${t.done ? "disabled" : ""} data-task-id="${t.id}">
+            ${t.done ? "完了" : t.ctaPrimary}
+          </button>
+        </div>
       </div>
     `;
 
     container.appendChild(card);
   });
 
-  // 绑定按钮事件
   container.querySelectorAll("button[data-task-id]").forEach((btn) => {
     btn.addEventListener("click", () => {
       const id = Number(btn.getAttribute("data-task-id"));
@@ -130,20 +174,20 @@ function renderTasks() {
   });
 }
 
-// 完成任务：更新水滴 & 次数
+// 完了（デモ：水滴が増える）
 function completeTask(taskId) {
-  const task = tasks.find((t) => t.id === taskId);
-  if (!task || task.done) return;
+  const t = tasks.find((x) => x.id === taskId);
+  if (!t || t.done) return;
 
-  task.done = true;
-  userState.drops += task.reward;
+  t.done = true;
+  userState.drops += t.reward;
   userState.completedTasks += 1;
 
   renderUserHeader();
   renderTasks();
 }
 
-// 权利列表（Level2）
+// 折りたたみ内：水滴の行き先
 function renderRights() {
   const container = document.getElementById("rights-list");
   container.innerHTML = "";
@@ -156,9 +200,9 @@ function renderRights() {
       <h4>${r.title}</h4>
       <p>${r.desc}</p>
       <div class="card-bottom-row">
-        <span class="reward">消耗：${r.cost} 💧</span>
+        <span class="reward">必要：${r.cost} 💧</span>
         <button class="btn btn-primary" data-right-id="${r.id}">
-          兑换
+          交換する
         </button>
       </div>
     `;
@@ -175,22 +219,21 @@ function renderRights() {
 }
 
 function redeemRight(rightId) {
-  const r = rights.find((item) => item.id === rightId);
+  const r = rights.find((x) => x.id === rightId);
   if (!r) return;
 
   if (userState.drops < r.cost) {
     const diff = r.cost - userState.drops;
-    alert(`水滴还不够哦，还差 ${diff} 滴 💧`);
+    alert(`水滴が足りません。あと ${diff} 💧`);
     return;
   }
 
-  // demo：直接扣除
   userState.drops -= r.cost;
   renderUserHeader();
-  alert(`已兑换：「${r.title}」！（demo 演示效果）`);
+  alert(`「${r.title}」を交換しました（デモ）`);
 }
 
-// 商店列表（Level3）
+// 商店カード（ユーザー向け）
 function renderShops() {
   const container = document.getElementById("shop-list");
   container.innerHTML = "";
@@ -202,56 +245,73 @@ function renderShops() {
     card.innerHTML = `
       <h4>${s.name}</h4>
       <p>${s.support}</p>
-      <p class="card-meta">持有水滴：${s.drops} 💧</p>
+      <p class="card-meta">水滴：${s.drops} 💧</p>
     `;
 
     container.appendChild(card);
   });
 }
 
-// 展示模式：排行榜
-function renderRanking() {
-  const ul = document.getElementById("ranking-list");
+// ==========================
+// レンダリング（展示ページ）
+// ==========================
+
+function renderDisplayFlow() {
+  const ul = document.getElementById("display-flow-list");
   ul.innerHTML = "";
 
-  // 按水滴从高到低排序
-  const sorted = [...rankingEntries].sort((a, b) => b.drops - a.drops);
-
-  sorted.forEach((item, idx) => {
+  let total = 0;
+  displayFlow.forEach((x) => {
+    total += x.plus;
     const li = document.createElement("li");
-    li.className = "ranking-item";
+    li.textContent = `${x.label}　＋${x.plus}💧`;
+    ul.appendChild(li);
+  });
 
+  document.getElementById("display-flow-total").textContent = `本日 合計：${total} 💧`;
+}
+
+function renderDisplayTraces() {
+  const ul = document.getElementById("display-trace-list");
+  ul.innerHTML = "";
+  displayTraces.forEach((t) => {
+    const li = document.createElement("li");
+    li.textContent = t;
+    ul.appendChild(li);
+  });
+}
+
+function renderDisplayRankingSoft() {
+  const ol = document.getElementById("display-ranking-soft");
+  ol.innerHTML = "";
+
+  const sorted = [...displayRanking].sort((a, b) => b.drops - a.drops);
+
+  sorted.forEach((x) => {
+    const li = document.createElement("li");
     li.innerHTML = `
-      <span>${idx + 1}. ${item.name} <span style="opacity:.7;font-size:.75rem;">(${item.type})</span></span>
-      <span>${item.drops} 💧</span>
+      <span class="name">${x.name}</span>
+      <span class="drop">${x.drops} 💧</span>
+      <span class="desc">${x.desc}</span>
     `;
-    ul.appendChild(li);
+    ol.appendChild(li);
   });
 }
 
-function renderDisplayTasks() {
-  const ul = document.getElementById("display-task-list");
+function renderDisplayShopsSoft() {
+  const ul = document.getElementById("display-shop-list-soft");
   ul.innerHTML = "";
-
-  tasks.forEach((t) => {
+  displayShopsSoft.forEach((s) => {
     const li = document.createElement("li");
-    li.textContent = `${t.title} ｜ +${t.reward}💧`;
+    li.textContent = s;
     ul.appendChild(li);
   });
 }
 
-function renderDisplayShops() {
-  const ul = document.getElementById("display-shop-list");
-  ul.innerHTML = "";
+// ==========================
+// 展示モード切り替え + 自動スクロール
+// ==========================
 
-  shops.forEach((s) => {
-    const li = document.createElement("li");
-    li.textContent = `${s.name} ｜ ${s.support}`;
-    ul.appendChild(li);
-  });
-}
-
-// 展示模式开关
 function setupDisplayMode() {
   const btn = document.getElementById("display-toggle");
   const main = document.getElementById("main-content");
@@ -261,29 +321,33 @@ function setupDisplayMode() {
 
   btn.addEventListener("click", () => {
     isDisplay = !isDisplay;
+
     if (isDisplay) {
       main.classList.add("hidden");
       display.classList.remove("hidden");
-      btn.textContent = "展示模式：开";
+      btn.textContent = "展示モード：ON";
+      display.scrollTo({ top: 0, behavior: "auto" });
     } else {
       main.classList.remove("hidden");
       display.classList.add("hidden");
-      btn.textContent = "展示模式：关";
+      btn.textContent = "展示モード：OFF";
     }
   });
 
-  // 自动小滚动（模拟大屏缓慢循环）
   setInterval(() => {
     if (!isDisplay) return;
-    display.scrollBy({ top: 200, behavior: "smooth" });
-    // 滚到底再回到顶部
-    if (display.scrollTop + display.clientHeight >= display.scrollHeight - 5) {
+
+    display.scrollBy({ top: 220, behavior: "smooth" });
+
+    if (display.scrollTop + display.clientHeight >= display.scrollHeight - 10) {
       display.scrollTo({ top: 0, behavior: "smooth" });
     }
-  }, 4000);
+  }, 5000);
 }
 
-// ------------ 初始化 ------------
+// ==========================
+// 初期化
+// ==========================
 
 function init() {
   renderUserHeader();
@@ -291,9 +355,11 @@ function init() {
   renderRights();
   renderShops();
 
-  renderRanking();
-  renderDisplayTasks();
-  renderDisplayShops();
+  renderDisplayFlow();
+  renderDisplayTraces();
+  renderDisplayRankingSoft();
+  renderDisplayShopsSoft();
+
   setupDisplayMode();
 }
 
